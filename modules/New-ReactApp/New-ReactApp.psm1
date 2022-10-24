@@ -333,7 +333,7 @@ module.exports = {
 
   npm install --silent --loglevel silent --no-optional --save-dev webpack webpack-cli @babel/preset-react babel-loader @babel/core @babel/preset-env @hot-loader/react-dom jest babel-jest webpack-dev-server css-loader style-loader html-webpack-plugin file-loader url-loader | Out-Null
   
-  npm installreact react-dom react-hot-loader --silent --loglevel silent --no-optional | Out-Null
+  npm install react react-dom react-hot-loader --silent --loglevel silent --no-optional | Out-Null
 
   # _$Path/AppName/package.json
   
