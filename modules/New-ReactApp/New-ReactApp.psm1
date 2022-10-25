@@ -55,10 +55,6 @@ function New-ReactApp() {
 
       Write-Host ($illegalCharacters + $nl)
 
-      Write-Host "Press any key to continue.."
-
-      $Host.UI.ReadLine() | Out-Null
-
       Exit
     }
 
@@ -86,15 +82,10 @@ function New-ReactApp() {
         try {
           New-Item $Path -ItemType Directory -ErrorAction Stop | Out-Null
         }
-
         catch {
           $message = $_
   
           Write-Warning $message
-
-          Write-Host "Press any key to continue.."
-  
-          $Host.UI.ReadLine() | Out-Null
 
           Exit
         }
@@ -103,17 +94,12 @@ function New-ReactApp() {
       # Get the full path
 
       try {
-        $_Path = Resolve-Path $Path | Select-Object -ExpandProperty Path
+        $_Path = Resolve-Path $Path -ErrorAction Stop | Select-Object -ExpandProperty Path
       }
-
       catch {
         $message = $_
 
         Write-Warning $message
-
-        Write-Host "Press any key to continue.."
-  
-        $Host.UI.ReadLine() | Out-Null
 
         Exit
       }
@@ -356,10 +342,6 @@ module.exports = {
     $Global:ProgressPreference = $originalProgressPreference
 
     Write-Host "All done!$nl"
-
-    Write-Host "Press any key to continue.."
-
-    $Host.UI.ReadLine() | Out-Null
   }
 }
 

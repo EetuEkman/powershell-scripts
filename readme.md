@@ -8,16 +8,18 @@ Modules can be imported or copied manually, but a powershell helper script has b
 
 ## Module-Helper.ps1
 
-The script provides various options to import the modules.
+The script provides various options to import or remove the modules.
 
 Because the script has to copy files or change module paths, the script requires administrator privileges.
 
-#### New-ReactApp
+## New-ReactApp
 
 New-ReactApp bootstraps a new barebones react app, similar way to Create React App, without added features.
 
-New-ReactApp [-AppName] <String> [-Path <String>]
+`New-ReactApp
+    [-AppName] <String>
+    [-Path <String>]`
 
-AppName parameter is mandatory. "Illegal" characters are not allowed.
+AppName parameter is mandatory. "Illegal" characters are not allowed. Invalid characters are found in `[System.IO.Path]::GetInvalidFileNameChars()`
 
-Path parameter is optional. Without the parameter, the React app will be bootstrapped in the current working directory.
+Path parameter is optional. Without the parameter, the React app will be bootstrapped to a directory in the current working directory.

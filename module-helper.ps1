@@ -74,8 +74,8 @@ if (($isLinux -eq $true) -or ($isMac -eq $true)) {
     Write-Host "5. " -ForegroundColor DarkYellow -NoNewline; Write-Host "Remove the modules from the current user by removing the modules from $currentUserModulePath"
     Write-Host "6. " -ForegroundColor DarkYellow -NoNewline; Write-Host "Remove the modules from all users by removing the modules from $allUsersModulePath"
     Write-Host "7. " -ForegroundColor DarkYellow -NoNewline; Write-Host "Remove the import modules command from the profile in path $profile"
-    
     Write-Host ""
+
     Write-Host "0. " -ForegroundColor DarkYellow -NoNewline; Write-Host ("Exit")
 
     $selection = Read-Host "Selection"
@@ -254,6 +254,7 @@ else {
     Write-Host "6. " -ForegroundColor DarkYellow -NoNewline; Write-Host "Remove the modules from all users by removing the modules from $allUsersModulePath"
     Write-Host "7. " -ForegroundColor DarkYellow -NoNewline; Write-Host ("Remove the modules by removing the path $modulesPath from " + '$env:PSModulePath')
     Write-Host ""
+
     Write-Host "0. " -ForegroundColor DarkYellow -NoNewline; Write-Host ("Exit")
 
     $selection = Read-Host "Selection"
@@ -277,6 +278,7 @@ else {
 
                 try {
                     Write-Host "Copying $modulePath to $currentUserModulePath" -ForegroundColor DarkYellow
+
                     Copy-Item $modulePath -Destination $currentUserModulePath -Recurse -Force
                 }
                 catch {
@@ -294,6 +296,7 @@ else {
 
                 try {
                     Write-Host "Copying $modulePath to $allUserModulePath" -ForegroundColor DarkYellow
+
                     Copy-Item $modulePath -Destination $allUsersModulePath -Recurse -Force
                 }
                 catch {
@@ -313,8 +316,9 @@ else {
                 $modulePath = Join-Path $currentUserModulePath $module
 
                 if ((Test-Path $modulePath) -eq $true) {
-                    Remove-Item $modulePath -Recurse -ErrorAction SilentlyContinue
                     Write-Host "Removing $modulePath" -ForegroundColor DarkYellow
+
+                    Remove-Item $modulePath -Recurse -ErrorAction SilentlyContinue
                 }
                 
             }
@@ -327,6 +331,7 @@ else {
 
                 if ((Test-Path $modulePath) -eq $true) {
                     Remove-Item $modulePath -Recurse -ErrorAction SilentlyContinue
+
                     Write-Host "Removing $modulePath" -ForegroundColor DarkYellow
                 }
                 
@@ -337,6 +342,7 @@ else {
         }
         0 {
             Write-Host "Exiting without changes." -ForegroundColor DarkYellow
+            
             exit
         }
 
