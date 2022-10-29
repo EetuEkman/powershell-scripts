@@ -14,20 +14,29 @@ Lastly, modules can be imported using the Import-Module cmdlet with the command 
 
 ## Module-Helper.ps1
 
-The script provides various options to import or remove the modules.
+Module-Helper.ps1 provides various options to import or remove the modules.
 
-Before running the script, changing the execution policy might be needed or use the `Unblock-File` PowerShell cmdlet.
+To run the script, changing the execution policy might be needed. `Unblock-File` PowerShell cmdlet can also be used.
 
-Because the script has to copy files or change module paths, the script requires administrator privileges.
+Because the script has to copy files or alter module paths, the script requires administrator privileges.
 
-The script can be run with `.\module-helper.ps1` from the current directory.
+The script can be run with `PS> .\module-helper.ps1` from the current directory.
+
+### Requirements
+
+..* PowerShell 7 ran as administrator
 
 ## New-ReactApp
 
-New-ReactApp sets up a new simple barebones react app, similar way to the [Create React App](https://create-react-app.dev/), but without all the added libraries and functionalities.
+New-ReactApp sets up a simple react app, similar way to the [Create React App](https://create-react-app.dev/), but without all the added features.
+
+### Requirements
+
+..* PowerShell 7 ran as administrator
+..* Node package manager installed with executable found in PATH
 
 Syntax: `New-ReactApp [-AppName] <String> [-Path <String>]`
 
-AppName parameter is mandatory. Certain characters are not allowed. Invalid characters are found in `[System.IO.Path]::GetInvalidFileNameChars()`
+AppName parameter is mandatory. Certain characters are not allowed. Invalid characters are listed in `PS> [System.IO.Path]::GetInvalidFileNameChars()`
 
-Path parameter is optional. Without the parameter, the React app will be bootstrapped to a directory in the current working directory.
+Path parameter is optional. Without the parameter, the react app will be set up in a directory created to the current working directory.

@@ -1,3 +1,5 @@
+
+
 <#
   .SYNOPSIS
     Sets up a new react.js app.
@@ -16,11 +18,11 @@
 
   .EXAMPLE
     New-ReactApp MyReactApp
-    Setups an app MyReactApp to current working directory e.g. .\MyReactApp
+    Sets up an app MyReactApp to the current working directory e.g. .\MyReactApp
 
   .EXAMPLE
     New-ReactApp -AppName MyOtherReactApp -Path C:\react-apps
-    Setups an app MyOtherReactApp to C:\react-apps\MyOtherReactApp
+    Sets up an app MyOtherReactApp to C:\react-apps\MyOtherReactApp
 #>
 function New-ReactApp() {
   [CmdletBinding()]
@@ -28,7 +30,9 @@ function New-ReactApp() {
     [Parameter(Mandatory = $true, Position = 0)]
     [string]$AppName,
     [Parameter()]
-    [string]$Path
+    [string]$Path,
+    [Switch]
+    $TypeScript
   )
 
   Begin {
@@ -44,21 +48,21 @@ function New-ReactApp() {
 
     # App name
 
-    $illegalCharacters = [System.IO.Path]::GetInvalidFileNameChars()
+    $invalidCharacters = [System.IO.Path]::GetInvalidFileNameChars()
 
-    $index = $AppName.IndexOfAny($illegalCharacters)
+    $index = -1
 
-    if (-Not ($index -eq -1)) {
-      Write-Warning "Project name contains illegal characters.$nl$nl"
+    $index = $AppName.IndexOfAny($invalidCharacters)
+
+    if (($index -eq -1) -eq $false) {
+      Write-Warning "App name contains invalid characters.$nl$nl"
       
-      Write-Host "Illegal characters are $nl"
-
-      Write-Host ($illegalCharacters + $nl)
+      Write-Verbose ("Invalid characters are: " + ($invalidCharacters -join " ") + $nl)
 
       Exit
     }
 
-    Write-Host "Creating directories.."
+    Write-Verbose "Creating directories.."
 
     # Check the Path-parameter
 
