@@ -10,7 +10,7 @@ For powershell to find the modules, modules have to be located in a path in $env
 
 On a windows systems, a new path can be persistently appended to the environment variable using the windows registry.
 
-Lastly, modules can be imported using the Import-Module cmdlet with the command `Import-Module path\to\module\folder`. Import-Module cmdlets can be set to be run automatically on PowerShell startup by adding the import-module commands to PowerShell profiles whose paths can be found in $profile variable.
+Lastly, modules can be imported using the Import-Module cmdlet with the command `PS> Import-Module path\to\module\folder`. Import-Module cmdlets can be set to be run automatically on PowerShell startup by adding the import-module commands to PowerShell profiles whose paths can be found in $profile variable.
 
 ## Module-Helper.ps1
 
@@ -24,7 +24,7 @@ The script can be run with `PS> .\module-helper.ps1` from the current directory.
 
 ### Requirements
 
-..* PowerShell 7 ran as administrator
+* PowerShell 7 ran as administrator
 
 ## New-ReactApp
 
@@ -32,8 +32,8 @@ New-ReactApp sets up a simple react app, similar way to the [Create React App](h
 
 ### Requirements
 
-..* PowerShell 7 ran as administrator
-..* Node package manager installed with executable found in PATH
+* PowerShell 7 ran as administrator
+* Node package manager installed with executable found in PATH
 
 Syntax: `New-ReactApp [-AppName] <String> [-Path <String>]`
 

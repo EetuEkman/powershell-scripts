@@ -4,24 +4,24 @@
 function Set-PSModulePath {
     param (
         [Parameter(Mandatory = $true)]
-        [string]$ModulePath
+        [string]$ModulesPath
     )
     
     $key = (Get-Item 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager').OpenSubKey('Environment', $true)
        
     [string]$psModulePath = $key.GetValue('PSModulePath', '', 'DoNotExpandEnvironmentNames')
 
-    if (($psModulePath.Contains($ModulePath)) -eq $true) {
-        Write-Host ('$Env:PSModulePath ' + "already contains $ModulePath, no changes necessary.") -ForegroundColor DarkYellow
+    if (($psModulePath.Contains($ModulesPath)) -eq $true) {
+        Write-Host ('$Env:PSModulePath ' + "already contains $ModulesPath, no changes necessary.") -ForegroundColor DarkYellow
 
         return
     }
 
-    $newPsModulePath = ($psModulePath + ";" + $ModulePath)
+    $newPsModulePath = ($psModulePath + ";" + $ModulesPath)
 
     $key.SetValue('PSModulePath', $newPsModulePath, [Microsoft.Win32.RegistryValueKind]::ExpandString)
 
-    Write-Verbose ("$ModulePath appended to " + '$Env:PSModulePath.')
+    Write-Verbose ("$ModulesPath appended to " + '$Env:PSModulePath.')
 
     Write-Verbose ("New " + '$Env:PSModulePath: ' + $newPsModulePath)
 
@@ -32,24 +32,24 @@ function Set-PSModulePath {
 function Remove-PSModulePath {
     param (
         [Parameter(Mandatory = $true)]
-        [string]$modulePath
+        [string]$ModulesPath
     )
 
     $key = (Get-Item 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager').OpenSubKey('Environment', $true)
        
     $psModulePath = $key.GetValue('PSModulePath', '', 'DoNotExpandEnvironmentNames')
 
-    if (($psModulePath.Contains($modulePath)) -eq $false) {
-        Write-Host ('$Env:PSModulePath ' + "does not contain $modulePath, no changes necessary.") -ForegroundColor DarkYellow
+    if (($psModulePath.Contains($ModulesPath)) -eq $false) {
+        Write-Host ('$Env:PSModulePath ' + "does not contain $ModulesPath, no changes necessary.") -ForegroundColor DarkYellow
 
         return
     }
 
-    $newPsModulePath = $psModulePath.Replace(";$modulePath", "");
+    $newPsModulePath = $psModulePath.Replace(";$ModulesPath", "");
 
     $key.SetValue('PSModulePath', $newPsModulePath, [Microsoft.Win32.RegistryValueKind]::ExpandString)
 
-    Write-Verbose ("$modulePath removed from " + '$Env:PSModulePath.')
+    Write-Verbose ("$ModulesPath removed from " + '$Env:PSModulePath.')
 
     Write-Verbose ("New " + '$Env:PSModulePath: ' + $newPsModulePath)
 
@@ -146,7 +146,11 @@ function Remove-FromProfile {
 
     # Line contains regular expression escape characters
 
-    $profileContent | Where-Object {$_ -notmatch [regex]::escape($line)} | Set-Content -Path $ProfilePath -Encoding utf8NoBOM
+    $profileContent = $profileContent | Where-Object {$_ -notmatch [regex]::escape($line)}
+
+    Set-Content -Path $ProfilePath -Value $profileContent -Encoding utf8NoBOM
+
+    Write-Host ("Restart powershell for the changes to take effect.") -ForegroundColor DarkYellow
 }
 
 function Copy-Modules {
@@ -189,7 +193,6 @@ function Remove-Modules {
 
             Remove-Item $modulePath -Recurse -ErrorAction SilentlyContinue
         }
-        
     }
 }
 
@@ -212,7 +215,11 @@ function Import-Modules {
 # Linux or mac
 
 if (($isLinux -eq $true) -or ($isMac -eq $true)) {
+    # $HOME/.local/share/powershell/Modules
+
     $currentUserModulePath = Join-Path $HOME .local share powershell Modules
+
+    # /usr/local/share/powershell/Modules
     
     $allUsersModulePath = Join-Path usr local share powershell Modules
 
@@ -281,7 +288,7 @@ if (($isLinux -eq $true) -or ($isMac -eq $true)) {
 
 $modulesPath = Join-Path $PSScriptRoot modules
 
-# $Env:PSModulePath environment variable contains the list of paths that are searched to find modules and resources
+# $Env:PSModulePath environment variable contains a list of paths that are searched to find modules and resources
 
 $availableModulePaths = $Env:PSModulePath -Split ";"
 
@@ -318,7 +325,7 @@ switch ($selection) {
         Copy-Modules -Source $modulesPath -Destination $allUsersModulePath
     }
     4 {
-        Set-PSModulePath -modulePath $modulesPath
+        Set-PSModulePath -ModulesPath $modulesPath
     }
     5 {
         Set-Profile -ProfilePath $PROFILE -ModulesPath $modulesPath
@@ -330,7 +337,7 @@ switch ($selection) {
         Remove-Modules -AvailableModules $modulesPath -From $allUsersModulePath
     }
     8 {
-        Remove-PSModulePath -modulePath $modulesPath
+        Remove-PSModulePath -ModulesPath $modulesPath
     }
     9 {
         Remove-FromProfile -ProfilePath $PROFILE -ModulesPath $modulesPath
