@@ -447,7 +447,9 @@ function New-ReactApp() {
     npm install react react-dom react-hot-loader --silent
 
     if ($TypeScript -eq $true) {
-      npm install --save-dev webpack webpack-cli '@types/react' '@types/react-dom' '@babel/preset-react' babel-loader @babel/core @babel/preset-env '@hot-loader/react-dom' webpack-dev-server css-loader style-loader typescript ts-loader '@hot-loader/react-dom'
+      npm install --save-dev webpack webpack-cli '@types/react' '@types/react-dom' '@babel/preset-react' babel-loader @babel/core @babel/preset-env '@hot-loader/react-dom' webpack-dev-server css-loader style-loader typescript ts-loader '@hot-loader/react-dom' jest ts-jest "@types/jest" babel-jest
+
+      npx ts-jest config:init
     }
     else {
       npm install --silent --save-dev webpack webpack-cli @babel/preset-react babel-loader @babel/core @babel/preset-env '@hot-loader/react-dom' jest babel-jest webpack-dev-server css-loader style-loader html-webpack-plugin file-loader url-loader
